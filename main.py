@@ -5,7 +5,6 @@ from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-CHAT_ID = 465438  # Хардкодим чат ID
 API_ID = "16904713"  # Хардкодим API ID
 API_HASH = "6c3aedb0f03d6ff6c9f5cfcba089a494"  # Хардкодим API HASH
 SESSION_STRING = "AgEB8gkAS39ms4PxZzrLDcOPppObOADF1wB3x9dJTSS7e6XzyW5vgwy6qwdGZd64Zn-GQqRJ3liW4Kmcc01ysC1mpfXjD4zkM2-vhx-4GZDuH-UciOh9YJz695UDd_JMKiAE6i7S91icFeNL8B_lzj35pJGdt5MntKNnsPDpzo0uNGQ3ztdyTvFj7WUMJfBf0pIUCf1J5KaQQlsyIWUXU3Bn1JKSu-zd3g1aTo3-0p4RmlgqiTfyPeLpACafjz-6x6SAyAbV3Rvk6YEvmsRR_MRvvgDWQRXw969nNwGLRWz5AqGiRg9C9hDUZnG0oxNCJNyHc22OT_L5NHczXwG3MGGCvWA5LgAAAAAWY7jyAA"  # Хардкодим сессию
@@ -28,13 +27,13 @@ async def shutdown():
     await client.stop()
 
 @app.get("/api/messages")
-async def get_messages():
+async def get_messages(chat_id: int):
     try:
         print("🚀 Starting...")
         messages = []
         
-        print(f"📥 Getting messages for chat {CHAT_ID}...")
-        async for message in client.get_chat_history(chat_id=CHAT_ID, limit=10):
+        print(f"📥 Getting messages for chat {chat_id}...")
+        async for message in client.get_chat_history(chat_id=chat_id, limit=10):
             message_info = {
                 "message_id": message.id,
                 "date": message.date.isoformat(),
